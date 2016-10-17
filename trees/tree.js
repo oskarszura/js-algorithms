@@ -32,7 +32,23 @@ class Tree {
   }
 
   contains (callback, traversal) {
-    traversal.call(this, callback)
+    traversal.call(this, callback);
+  }
+
+  add(data, toData, traversal) {
+    let parent;
+
+    this.contains(node => {
+      if(node.data === toData) {
+        parent = node;
+      }
+    }, traversal);
+
+    if(parent) {
+      parent.children.push(new Node(data));
+    } else {
+      throw new Error('Cannot add new node to non existing node');
+    }
   }
 }
 
@@ -44,27 +60,16 @@ class Node {
   }
 }
 
-var tree = new Tree('one');
-tree._root.children.push(new Node('two'));
-tree._root.children[0].parent = tree;
+const tree = new Tree('one');
 
-tree._root.children.push(new Node('three'));
-tree._root.children[1].parent = tree;
+tree.add('two', 'one', tree.traverseDF);
+tree.add('three', 'one', tree.traverseDF);
 
-tree._root.children.push(new Node('four'));
-tree._root.children[2].parent = tree;
-tree._root.children[0].children.push(new Node('five'));
-tree._root.children[0].children[0].parent = tree._root.children[0];
+tree.add('four', 'two', tree.traverseDF);
+tree.add('five', 'two', tree.traverseDF);
 
-tree._root.children[0].children.push(new Node('six'));
-tree._root.children[0].children[1].parent = tree._root.children[0];
-
-tree._root.children[2].children.push(new Node('seven'));
-tree._root.children[2].children[0].parent = tree._root.children[2];
-
-/*tree.traverseBF(function(node) {
-  console.log(node.data)
-});*/
+tree.add('six', 'three', tree.traverseDF);
+tree.add('seven', 'three', tree.traverseDF);
 
 tree.contains(node => {
   if (node.data === 'two') {
