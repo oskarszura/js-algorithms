@@ -30,6 +30,10 @@ class Tree {
     callback(this._root);
     traverse(this._root);
   }
+
+  contains (callback, traversal) {
+    traversal.call(this, callback)
+  }
 }
 
 class Node {
@@ -58,6 +62,12 @@ tree._root.children[0].children[1].parent = tree._root.children[0];
 tree._root.children[2].children.push(new Node('seven'));
 tree._root.children[2].children[0].parent = tree._root.children[2];
 
-tree.traverseBF(function(node) {
+/*tree.traverseBF(function(node) {
   console.log(node.data)
-});
+});*/
+
+tree.contains(node => {
+  if (node.data === 'two') {
+    console.log(node);
+  }
+}, tree.traverseBF);
