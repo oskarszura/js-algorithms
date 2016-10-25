@@ -35,7 +35,7 @@ class Tree {
     traversal.call(this, callback);
   }
 
-  add(data, toData, traversal) {
+  add (data, toData, traversal) {
     let parent;
 
     this.contains(node => {
@@ -48,6 +48,22 @@ class Tree {
       parent.children.push(new Node(data));
     } else {
       throw new Error('Cannot add new node to non existing node');
+    }
+  }
+
+  remove (data, fromData, traversal) {
+    let parent;
+
+    this.contains(node => {
+      if(node.data === toData) {
+        parent = node;
+      }
+    }, traversal);
+
+    if(parent) {
+      delete parent.children.push(new Node(data));
+    } else {
+      throw new Error('Cannot remove node that doesn\'t exist');
     }
   }
 }
